@@ -3,12 +3,13 @@
 import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
-import { Trip } from "@prisma/client";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
 interface TripReservationProps {
-    trip: Trip;
+    tripStartDate:Date;
+    tripEndDate: Date;
+    maxGuests: number;
 }
 
 interface TripReservationForm {
@@ -17,13 +18,15 @@ interface TripReservationForm {
     endDate: Date | null;
 }
 
-const TripReservation = ({ trip }: TripReservationProps) => {
+const TripReservation = ({ tripStartDate, tripEndDate, maxGuests  }: TripReservationProps) => {
 
-    const { register, handleSubmit, control, formState: { errors } } = useForm<TripReservationForm>();
+    const { register, handleSubmit, control, formState: { errors }, watch } = useForm<TripReservationForm>();
 
     const onSubmit = (data: any) => {
 
     }
+
+    const startDate = watch("startDate");
 
     return (
         <div className="flex flex-col px-5">
@@ -45,6 +48,7 @@ const TripReservation = ({ trip }: TripReservationProps) => {
                             error={!!errors?.startDate}
                             errorMessage={errors?.startDate?.message}
                             onChange={field.onChange}
+                            minDate={tripStartDate}
                             />
                     )}
                 />
@@ -65,6 +69,8 @@ const TripReservation = ({ trip }: TripReservationProps) => {
                             error={!!errors?.endDate}
                             errorMessage={errors?.endDate?.message}
                             onChange={field.onChange}
+                            maxDate={tripEndDate}
+                            minDate={startDate ?? tripStartDate}
                             />
                     )}
                 />
@@ -76,7 +82,7 @@ const TripReservation = ({ trip }: TripReservationProps) => {
                     message: "Número de hóspedes é obrigatório."
                 }
             })} 
-            placeholder={`Número de hóspedes (máx: ${trip?.maxGuests})`} 
+            placeholder={`Número de hóspedes (máx: ${maxGuests})`} 
             className="mt-4" 
             error={!!errors?.guests}
             errorMessage={errors?.guests?.message}
