@@ -10,7 +10,7 @@ import { useForm, Controller } from "react-hook-form";
 
 interface TripReservationProps {
     tripId: string;
-    tripStartDate:Date;
+    tripStartDate: Date;
     tripEndDate: Date;
     maxGuests: number;
     pricePerDay: number;
@@ -22,14 +22,26 @@ interface TripReservationForm {
     endDate: Date | null;
 }
 
-const TripReservation = ({ tripId, tripStartDate, tripEndDate, maxGuests, pricePerDay }: TripReservationProps) => {
-
-    const { register, handleSubmit, control, formState: { errors }, watch, setError } = useForm<TripReservationForm>();
+const TripReservation = ({
+    tripId,
+    tripStartDate,
+    tripEndDate,
+    maxGuests,
+    pricePerDay,
+}: TripReservationProps) => {
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors },
+        watch,
+        setError,
+    } = useForm<TripReservationForm>();
 
     const router = useRouter();
 
     const onSubmit = async (data: TripReservationForm) => {
-        const response = await fetch("http://localhost:3000/api/trips/check", {
+        const response = await fetch("/api/trips/check", {
             method: "POST",
             body: Buffer.from(
                 JSON.stringify({
@@ -68,8 +80,12 @@ const TripReservation = ({ tripId, tripStartDate, tripEndDate, maxGuests, priceP
             });
         }
 
-        router.push(`/trips/${tripId}/confirmation?startDate=${data.startDate?.toISOString()}&endDate=${data.endDate?.toISOString()}&guests=${data.guests}`);
-    }
+        router.push(
+            `/trips/${tripId}/confirmation?startDate=${data.startDate?.toISOString()}&endDate=${data.endDate?.toISOString()}&guests=${
+                data.guests
+            }`
+        );
+    };
 
     const startDate = watch("startDate");
     const endDate = watch("endDate");
@@ -77,80 +93,89 @@ const TripReservation = ({ tripId, tripStartDate, tripEndDate, maxGuests, priceP
     return (
         <div className="flex flex-col px-5">
             <div className="flex gap-4">
-                <Controller 
+                <Controller
                     name="startDate"
                     rules={{
                         required: {
                             value: true,
-                            message: "Data inicial é obrigatória."
+                            message: "Data inicial é obrigatória.",
                         },
                     }}
                     control={control}
                     render={({ field }) => (
-                        <DatePicker 
-                            selected={field.value} 
-                            className="w-full" 
-                            placeholderText="Data de inicio" 
+                        <DatePicker
+                            selected={field.value}
+                            className="w-full"
+                            placeholderText="Data de inicio"
                             error={!!errors?.startDate}
                             errorMessage={errors?.startDate?.message}
                             onChange={field.onChange}
                             minDate={tripStartDate}
-                            />
+                        />
                     )}
                 />
-                <Controller 
+                <Controller
                     name="endDate"
                     rules={{
                         required: {
                             value: true,
-                            message: "Data final é obrigatória."
+                            message: "Data final é obrigatória.",
                         },
                     }}
                     control={control}
                     render={({ field }) => (
-                        <DatePicker 
-                            selected={field.value} 
-                            className="w-full" 
-                            placeholderText="Data de inicio" 
+                        <DatePicker
+                            selected={field.value}
+                            className="w-full"
+                            placeholderText="Data de inicio"
                             error={!!errors?.endDate}
                             errorMessage={errors?.endDate?.message}
                             onChange={field.onChange}
                             maxDate={tripEndDate}
                             minDate={startDate ?? tripStartDate}
-                            />
+                        />
                     )}
                 />
             </div>
 
-            <Input {...register("guests", {
-                required: {
-                    value: true,
-                    message: "Número de hóspedes é obrigatório."
-                },
-                max: {
-                    value: maxGuests,
-                    message: `Número de hospedes não pode ser maior que ${maxGuests}.`
-                }
-            })} 
-            placeholder={`Número de hóspedes (máx: ${maxGuests})`} 
-            className="mt-4" 
-            error={!!errors?.guests}
-            errorMessage={errors?.guests?.message}
-            type="number"
+            <Input
+                {...register("guests", {
+                    required: {
+                        value: true,
+                        message: "Número de hóspedes é obrigatório.",
+                    },
+                    max: {
+                        value: maxGuests,
+                        message: `Número de hospedes não pode ser maior que ${maxGuests}.`,
+                    },
+                })}
+                placeholder={`Número de hóspedes (máx: ${maxGuests})`}
+                className="mt-4"
+                error={!!errors?.guests}
+                errorMessage={errors?.guests?.message}
+                type="number"
             />
-                
+
             <div className="flex justify-between mt-3">
-                <p className="font-medium text-primaryDarker text-sm">Total: </p>
                 <p className="font-medium text-primaryDarker text-sm">
-                    {(startDate && endDate) ? 
-                        `R$${differenceInDays(endDate, startDate) * pricePerDay}` ?? 1
-                    : "R$0"}
+                    Total:{" "}
+                </p>
+                <p className="font-medium text-primaryDarker text-sm">
+                    {startDate && endDate
+                        ? `R$${
+                              differenceInDays(endDate, startDate) * pricePerDay
+                          }` ?? 1
+                        : "R$0"}
                 </p>
             </div>
             <div className="pb-10 border-b border-b-grayLighter w-full">
-                <Button onClick={() => handleSubmit(onSubmit)()} className="mt-3 w-full">Reservar agora</Button>
+                <Button
+                    onClick={() => handleSubmit(onSubmit)()}
+                    className="mt-3 w-full"
+                >
+                    Reservar agora
+                </Button>
             </div>
-            
         </div>
     );
 };
