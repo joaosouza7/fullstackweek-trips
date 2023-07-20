@@ -13,7 +13,7 @@ const QuickSearch = () => {
                 <div className="w-full h-[1px] bg-grayLighter"></div>
             </div>
 
-            <div className="flex w-full items-center justify-between mt-5">
+            <div className="flex w-full justify-between mt-5 lg:mt-10 lg:justify-center gap-40">
                 <div className="flex flex-col items-center gap-1">
                     <Link
                         href={`/trips/search?text=hotel`}
@@ -25,7 +25,9 @@ const QuickSearch = () => {
                             src="/hotel-icon.png"
                             alt="Hotel"
                         />
-                        <p className="text-sm text-grayPrimary">Hotel</p>
+                        <p className="text-sm lg:text-base text-primaryGray">
+                            Hotel
+                        </p>
                     </Link>
                 </div>
 
@@ -40,7 +42,9 @@ const QuickSearch = () => {
                             src="/farm-icon.png"
                             alt="Fazenda"
                         />
-                        <p className="text-sm text-grayPrimary">Fazenda</p>
+                        <p className="text-sm lg:text-base text-primaryGray">
+                            Fazenda
+                        </p>
                     </Link>
                 </div>
 
@@ -55,7 +59,9 @@ const QuickSearch = () => {
                             src="/cottage-icon.png"
                             alt="Chalé"
                         />
-                        <p className="text-sm text-grayPrimary">Chalé</p>
+                        <p className="text-sm lg:text-base text-primaryGray">
+                            Chalé
+                        </p>
                     </Link>
                 </div>
 
@@ -70,7 +76,9 @@ const QuickSearch = () => {
                             src="/inn-icon.png"
                             alt="Pousada"
                         />
-                        <p className="text-sm text-grayPrimary">Pousada</p>
+                        <p className="text-sm lg:text-base text-primaryGray">
+                            Pousada
+                        </p>
                     </Link>
                 </div>
             </div>
