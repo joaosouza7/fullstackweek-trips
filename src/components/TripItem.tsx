@@ -10,19 +10,30 @@ interface TripItemProps {
 
 const TripItem = ({ trip }: TripItemProps) => {
     return (
-        <Link href={`trips/${trip.id}`}>
+        <Link href={`/trips/${trip.id}`}>
             <div className="flex flex-col">
                 <div className="relative w-[280px] h-[280px]">
-                    <Image src={trip.coverImage} className="rounded-lg shadow-md" alt={trip.name} fill style={{ objectFit: "cover"}}/>
+                    <Image
+                        src={trip.coverImage}
+                        className="rounded-lg shadow-md"
+                        alt={trip.name}
+                        fill
+                        style={{ objectFit: "cover" }}
+                    />
                 </div>
-                <h3 className="text-primaryDarker font-medium text-sm mt-2">{trip.name}</h3>
+                <h3 className="text-primaryDarker font-medium text-sm mt-2">
+                    {trip.name}
+                </h3>
                 <div className="flex items-center gap-1 my-1">
                     <ReactCountryFlag countryCode={trip.countryCode} svg />
                     <p className="text-xs text-primaryGray">{trip.location}</p>
                 </div>
 
                 <p className="text-xs text-primaryGray">
-                    <span className="text-primary font-medium">R${trip.pricePerDay.toString()}</span> por dia
+                    <span className="text-primary font-medium">
+                        R${trip.pricePerDay.toString()}
+                    </span>{" "}
+                    por dia
                 </p>
             </div>
         </Link>
